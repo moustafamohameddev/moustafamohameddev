@@ -3,15 +3,6 @@
 <img src="https://github.com/SP-XD/SP-XD/blob/main/images/hellocoders_rounded.gif?raw=true" alt="Hello Coders" width="60%"/> <br>
 <img src="https://github.com/SP-XD/SP-XD/blob/main/images/dev-working_rounded.gif?raw=true" alt="Workspace" width="40%"/><br> 
 
-</details>
-
-![Totals Hits](https://komarev.com/ghpvc/?username=MostafaMohamed&style=flat&color=orange&label=PROFILE+VIEWS)
-![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/MostafaMohamed&count_bg=%2379C83D&title_bg=%23555555&icon=mediafire.svg&icon_color=%23E7E7E7&title=HITS&edge_flat=false)
-[![telegram badge](https://img.shields.io/badge/Mostafa-grey?style=flat&logo=telegram)](https://t.me/YOUR_USERNAME) <br>
-</div>
-
-<hr>
-
 # 👋 Hi! I'm Mostafa Mohamed  
 ### Beginner Full Stack Developer | C++ Enthusiast | Linux Explorer  
 
