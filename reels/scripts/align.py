@@ -141,13 +141,37 @@ REELS = [
     },
 ]
 
+MOVES = ["dollyIn", "panLeft", "tiltUp", "panRight", "dollyOut"]
+
+
+def build_scenes(reel_id, duration, word_starts):
+    """One scene per available plate (public/bg/<id>-N.jpg), cut at word onsets
+    closest to an even split so a cut never lands mid-word."""
+    plates = []
+    n = 1
+    while os.path.exists(os.path.join(ROOT, "public", "bg", f"{reel_id}-{n}.jpg")):
+        plates.append(f"bg/{reel_id}-{n}.jpg")
+        n += 1
+    if not plates and os.path.exists(os.path.join(ROOT, "public", "bg", f"{reel_id}.jpg")):
+        plates = [f"bg/{reel_id}.jpg"]
+    if not plates:
+        return []
+    cuts = [0.0]
+    for k in range(1, len(plates)):
+        target = duration * k / len(plates)
+        near = [w for w in word_starts if abs(w - target) <= 2.0 and w > cuts[-1] + 3]
+        cuts.append(min(near, key=lambda w: abs(w - target)) if near else target)
+    cuts.append(duration)
+    return [{"src": p, "s": round(cuts[i], 3), "e": round(cuts[i + 1], 3), "move": MOVES[i % len(MOVES)]}
+            for i, p in enumerate(plates)]
+
+
 out = {"fps": 30, "width": 1080, "height": 1920, "reels": []}
 for r in REELS:
     dips = onsets[r["id"]]["dips"]
     c0 = r["clipStart"]
-    reel = {k: r[k] for k in ("id", "surah", "title", "audio", "bg", "mood")}
+    reel = {k: r[k] for k in ("id", "surah", "title", "audio", "mood")}
     reel["duration"] = round(r["clipEnd"] - r["clipStart"], 3)
-    reel["bgExists"] = os.path.exists(os.path.join(ROOT, "public", r["bg"]))
     reel["ayat"] = []
     for a in r["ayat"]:
         phrases = []
@@ -158,8 +182,11 @@ for r in REELS:
                 "words": [{"w": w["w"], "s": round(w["s"] - c0, 3), "e": round(w["e"] - c0, 3)} for w in words],
             })
         reel["ayat"].append({"n": a["n"], "tr": a["tr"], "s": phrases[0]["s"], "e": phrases[-1]["e"], "phrases": phrases})
+    word_starts = [w["s"] for a in reel["ayat"] for p in a["phrases"] for w in p["words"]]
+    reel["scenes"] = build_scenes(r["id"], reel["duration"], word_starts)
     out["reels"].append(reel)
-    print(reel["id"], reel["duration"], "s", "bg" if reel["bgExists"] else "(procedural bg)")
+    print(reel["id"], reel["duration"], "s", f'{len(reel["scenes"])} scene(s)',
+          [(s["s"], s["e"], s["move"]) for s in reel["scenes"]])
     for a in reel["ayat"]:
         for p in a["phrases"]:
             print("   ", " | ".join(f'{w["w"]}@{w["s"]:.2f}' for w in p["words"]))

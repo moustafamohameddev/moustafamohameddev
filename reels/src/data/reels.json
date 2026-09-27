@@ -8,10 +8,8 @@
    "surah": "سُورَةُ الْمُلْك",
    "title": "AL-MULK · 1–2",
    "audio": "audio/mulk-1-2.m4a",
-   "bg": "bg/mulk-1-2.jpg",
    "mood": "mountains",
    "duration": 28.45,
-   "bgExists": true,
    "ayat": [
     {
      "n": "١",
@@ -159,6 +157,26 @@
       }
      ]
     }
+   ],
+   "scenes": [
+    {
+     "src": "bg/mulk-1-2-1.jpg",
+     "s": 0.0,
+     "e": 9.951,
+     "move": "dollyIn"
+    },
+    {
+     "src": "bg/mulk-1-2-2.jpg",
+     "s": 9.951,
+     "e": 19.55,
+     "move": "panLeft"
+    },
+    {
+     "src": "bg/mulk-1-2-3.jpg",
+     "s": 19.55,
+     "e": 28.45,
+     "move": "tiltUp"
+    }
    ]
   },
   {
@@ -166,10 +184,8 @@
    "surah": "سُورَةُ الْمُلْك",
    "title": "AL-MULK · 3",
    "audio": "audio/mulk-3.m4a",
-   "bg": "bg/mulk-3.jpg",
    "mood": "sky",
    "duration": 21.8,
-   "bgExists": true,
    "ayat": [
     {
      "n": "٣",
@@ -287,6 +303,20 @@
       }
      ]
     }
+   ],
+   "scenes": [
+    {
+     "src": "bg/mulk-3-1.jpg",
+     "s": 0.0,
+     "e": 10.51,
+     "move": "dollyIn"
+    },
+    {
+     "src": "bg/mulk-3-2.jpg",
+     "s": 10.51,
+     "e": 21.8,
+     "move": "panLeft"
+    }
    ]
   },
   {
@@ -294,10 +324,8 @@
    "surah": "سُورَةُ الْمُلْك",
    "title": "AL-MULK · 12–13",
    "audio": "audio/mulk-12-13.m4a",
-   "bg": "bg/mulk-12-13.jpg",
    "mood": "room",
    "duration": 28.15,
-   "bgExists": true,
    "ayat": [
     {
      "n": "١٢",
@@ -429,6 +457,20 @@
       }
      ]
     }
+   ],
+   "scenes": [
+    {
+     "src": "bg/mulk-12-13-1.jpg",
+     "s": 0.0,
+     "e": 14.65,
+     "move": "dollyIn"
+    },
+    {
+     "src": "bg/mulk-12-13-2.jpg",
+     "s": 14.65,
+     "e": 28.15,
+     "move": "panLeft"
+    }
    ]
   },
   {
@@ -436,10 +478,8 @@
    "surah": "سُورَةُ الْمُلْك",
    "title": "AL-MULK · 15",
    "audio": "audio/mulk-15.m4a",
-   "bg": "bg/mulk-15.jpg",
    "mood": "desert",
    "duration": 20.25,
-   "bgExists": true,
    "ayat": [
     {
      "n": "١٥",
@@ -531,6 +571,26 @@
       }
      ]
     }
+   ],
+   "scenes": [
+    {
+     "src": "bg/mulk-15-1.jpg",
+     "s": 0.0,
+     "e": 7.17,
+     "move": "dollyIn"
+    },
+    {
+     "src": "bg/mulk-15-2.jpg",
+     "s": 7.17,
+     "e": 14.01,
+     "move": "panLeft"
+    },
+    {
+     "src": "bg/mulk-15-3.jpg",
+     "s": 14.01,
+     "e": 20.25,
+     "move": "tiltUp"
+    }
    ]
   },
   {
@@ -538,10 +598,8 @@
    "surah": "سُورَةُ الْمُلْك",
    "title": "AL-MULK · 19",
    "audio": "audio/mulk-19.m4a",
-   "bg": "bg/mulk-19.jpg",
    "mood": "birds",
    "duration": 28.55,
-   "bgExists": true,
    "ayat": [
     {
      "n": "١٩",
@@ -644,6 +702,20 @@
       }
      ]
     }
+   ],
+   "scenes": [
+    {
+     "src": "bg/mulk-19-1.jpg",
+     "s": 0.0,
+     "e": 13.4,
+     "move": "dollyIn"
+    },
+    {
+     "src": "bg/mulk-19-2.jpg",
+     "s": 13.4,
+     "e": 28.55,
+     "move": "panLeft"
+    }
    ]
   },
   {
@@ -651,10 +723,8 @@
    "surah": "سُورَةُ الْمُلْك",
    "title": "AL-MULK · 30",
    "audio": "audio/mulk-30.m4a",
-   "bg": "bg/mulk-30.jpg",
    "mood": "water",
    "duration": 24.75,
-   "bgExists": true,
    "ayat": [
     {
      "n": "٣٠",
@@ -725,6 +795,26 @@
        ]
       }
      ]
+    }
+   ],
+   "scenes": [
+    {
+     "src": "bg/mulk-30-1.jpg",
+     "s": 0.0,
+     "e": 7.64,
+     "move": "dollyIn"
+    },
+    {
+     "src": "bg/mulk-30-2.jpg",
+     "s": 7.64,
+     "e": 15.62,
+     "move": "panLeft"
+    },
+    {
+     "src": "bg/mulk-30-3.jpg",
+     "s": 15.62,
+     "e": 24.75,
+     "move": "tiltUp"
     }
    ]
   }

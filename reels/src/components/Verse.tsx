@@ -9,7 +9,6 @@ const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const WordSpan: React.FC<{word: Word; t: number; last: boolean}> = ({word, t, last}) => {
   const a = interpolate(t, [word.s - 0.06, word.s + 0.28], [0, 1], {...clamp, easing: Easing.out(Easing.cubic)});
   const y = interpolate(a, [0, 1], [14, 0]);
-  const blur = interpolate(a, [0, 1], [8, 0]);
   const active = t >= word.s && t < word.e + 0.15;
   const color = active ? theme.goldHi : theme.gold;
   const glow = active
@@ -21,7 +20,6 @@ const WordSpan: React.FC<{word: Word; t: number; last: boolean}> = ({word, t, la
         display: 'inline-block',
         opacity: a,
         transform: `translateY(${y}px)`,
-        filter: `blur(${blur}px)`,
         color,
         textShadow: glow,
         whiteSpace: 'nowrap',
