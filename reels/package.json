@@ -1,0 +1,28 @@
+{
+  "name": "surah-al-mulk-reels",
+  "version": "1.0.0",
+  "description": "Remotion project: cinematic Quran reels (Surah Al-Mulk) with word-by-word timing",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "node scripts/render-all.mjs",
+    "align": "python3 scripts/align.py",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.529",
+    "@remotion/fonts": "^4.0.529",
+    "@remotion/media-utils": "^4.0.529",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}
