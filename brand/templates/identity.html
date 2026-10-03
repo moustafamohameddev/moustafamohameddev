@@ -1,0 +1,38 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Identity</title>
+<link rel="stylesheet" href="brand.css">
+<!--
+  Profile picture and channel banners. Query param `kind`:
+    avatar      1080x1080  (all four platforms crop it to a circle)
+    yt-banner   2560x1440  (safe area: center 1546x423, visible on every device)
+    fb-cover    1640x624   (safe area: center 1100x624, mobile crops the sides)
+  Optional `line` replaces the tagline on banners.
+-->
+<style>
+  body { background: var(--night); display: grid; place-items: center; }
+  .avatar { --w: 1080px; --h: 1080px; }
+  .avatar .sig { position: static; width: 700px; }
+  .banner .stack { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .banner .sig { position: static; }
+  .banner .line { font-family: var(--font-ui); font-weight: 500; color: var(--ivory-muted); letter-spacing: .02em; }
+  .yt-banner { --w: 2560px; --h: 1440px; }
+  .yt-banner .sig { height: 190px; }
+  .yt-banner .line { font-size: 44px; }
+  .fb-cover { --w: 1640px; --h: 624px; }
+  .fb-cover .sig { height: 150px; }
+  .fb-cover .line { font-size: 36px; }
+</style>
+<body>
+<div class="stack" id="stack">
+  <img class="sig" src="../assets/signature-ivory.svg" alt="مصطفى محمد">
+  <p class="line" id="line">تلاوات من القرآن الكريم</p>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const kind = q.get('kind') || 'avatar';
+  document.body.className = kind === 'avatar' ? 'avatar' : 'banner ' + kind;
+  if (kind === 'avatar') document.getElementById('line').remove();
+  else if (q.get('line')) document.getElementById('line').textContent = q.get('line');
+</script>
+</body>

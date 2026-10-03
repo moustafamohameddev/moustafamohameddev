@@ -1,0 +1,56 @@
+{
+  "name": "Mostafa Mohamed",
+  "name_ar": "مصطفى محمد",
+  "version": 1,
+  "color": {
+    "night":       { "value": "#0B0907", "usage": "Ground, gradient ink, avatar and banner background" },
+    "surface":     { "value": "#17110C", "usage": "End cards and solid panels" },
+    "ivory":       { "value": "#F4EDE1", "usage": "Ayah text, signature, speech captions" },
+    "ivory-muted": { "value": "#CFC5B5", "usage": "Translation, secondary lines" },
+    "smoke":       { "value": "#9A8F80", "usage": "Clear Quran added words, tertiary labels" },
+    "amber":       { "value": "#E8A24A", "usage": "The only accent: nuqta, surah label, highlighted words, active caption word" },
+    "hairline":    { "value": "#3A2E23", "usage": "Rules on dark documents" }
+  },
+  "font": {
+    "quran":     { "family": "KFGQPC Uthmanic Script HAFS", "file": "fonts/UthmanicHafs1Ver18.ttf", "usage": "Quran text only, and surah names on covers" },
+    "signature": { "family": "Aref Ruqaa", "weight": 700, "file": "fonts/ArefRuqaa-Bold.ttf", "usage": "Source of the signature artwork only; use assets/signature-*.svg, never live text" },
+    "ui":        { "family": "IBM Plex Sans Arabic", "weights": [400, 500, 600, 700], "files": ["fonts/IBMPlexSansArabic-Regular.ttf", "fonts/IBMPlexSansArabic-Medium.ttf", "fonts/IBMPlexSansArabic-SemiBold.ttf", "fonts/IBMPlexSansArabic-Bold.ttf"], "usage": "Translation, labels, speech captions, thumbnails" }
+  },
+  "layout": {
+    "vertical": {
+      "canvas": [1080, 1920],
+      "safe": { "top": 250, "bottom": 480, "right_buttons": { "x_from": 950, "y_from": 900, "y_to": 1440 }, "text_x": [130, 950] },
+      "signature": { "anchor": "top-right", "top": 262, "right": 72, "height": 64, "opacity": 0.9 },
+      "ayah_block": { "anchor": "bottom-center", "bottom": 480, "width": 820, "gap": 18 },
+      "ayah": { "font": "quran", "size": 62, "line_height": 1.85, "color": "ivory", "max_lines": 2 },
+      "translation": { "font": "ui", "weight": 500, "size": 30, "line_height": 1.38, "color": "ivory-muted", "max_width": 760, "max_lines": 3 },
+      "label": { "font": "ui", "weight": 500, "size": 24, "color": "amber" },
+      "caption": { "font": "ui", "weight": 600, "size": 64, "color": "ivory", "active": "amber", "bottom": 500, "max_words": 5 },
+      "grid_crop_3x4": { "y": [240, 1680] }
+    },
+    "landscape": {
+      "canvas": [1920, 1080],
+      "safe": { "bottom": 96 },
+      "signature": { "anchor": "top-right", "top": 56, "right": 64, "height": 60, "opacity": 0.9 },
+      "ayah_block": { "anchor": "bottom-center", "bottom": 96, "width": 1400, "gap": 14 },
+      "ayah": { "font": "quran", "size": 66, "line_height": 1.8, "color": "ivory", "max_lines": 2 },
+      "translation": { "font": "ui", "weight": 500, "size": 32, "line_height": 1.35, "color": "ivory-muted", "max_width": 1200 },
+      "label": { "font": "ui", "weight": 500, "size": 22, "color": "amber" },
+      "caption": { "font": "ui", "weight": 600, "size": 60, "bottom": 120 }
+    }
+  },
+  "shade": {
+    "top": "rgba(11,9,7,.45) at 0% -> transparent at 16%",
+    "bottom": "transparent at 48% -> rgba(11,9,7,.70) at 70% -> rgba(11,9,7,.93) at 100%"
+  },
+  "motion": { "text_fade_ms": 250, "ayah_lead_s": 0.1, "ayah_tail_s": 0.3, "other_motion": "none" },
+  "audio": { "integrated_lufs": -14, "true_peak_dbtp": -1, "lra": 11, "sample_rate": 48000, "music": "never" },
+  "export": {
+    "video": { "codec": "h264", "profile": "high", "pix_fmt": "yuv420p", "fps": 30, "crf": 18, "gop_s": 2, "faststart": true, "color": "bt709" },
+    "audio": { "codec": "aac", "bitrate": "320k", "channels": 2 }
+  },
+  "sources": {
+    "quran_text": "https://raw.githubusercontent.com/thetruetruth/quran-data-kfgqpc/main/hafs/data/hafsData_v18.json",
+    "translation": "https://raw.githubusercontent.com/fawazahmed0/quran-api/1/editions/eng-mustafakhattaba/{surah}/{ayah}.json"
+  }
+}

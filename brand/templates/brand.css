@@ -1,0 +1,49 @@
+/* Mostafa Mohamed — brand tokens for rendered overlays.
+   Canvas units are real pixels of the exported frame. */
+@font-face { font-family: "KFGQPC Hafs"; src: url("../fonts/UthmanicHafs1Ver18.ttf"); }
+@font-face { font-family: "Aref Ruqaa"; src: url("../fonts/ArefRuqaa-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Plex Arabic"; src: url("../fonts/IBMPlexSansArabic-Regular.ttf"); font-weight: 400; }
+@font-face { font-family: "Plex Arabic"; src: url("../fonts/IBMPlexSansArabic-Medium.ttf"); font-weight: 500; }
+@font-face { font-family: "Plex Arabic"; src: url("../fonts/IBMPlexSansArabic-SemiBold.ttf"); font-weight: 600; }
+@font-face { font-family: "Plex Arabic"; src: url("../fonts/IBMPlexSansArabic-Bold.ttf"); font-weight: 700; }
+
+:root {
+  --night: #0B0907;        /* ground, gradient ink */
+  --surface: #17110C;      /* end cards, thumbnail panels */
+  --ivory: #F4EDE1;        /* ayah text, signature, captions */
+  --ivory-muted: #CFC5B5;  /* translation */
+  --smoke: #9A8F80;        /* tertiary labels */
+  --amber: #E8A24A;        /* the one accent */
+  --hairline: #3A2E23;
+
+  --font-quran: "KFGQPC Hafs", serif;
+  --font-sign: "Aref Ruqaa", serif;
+  --font-ui: "Plex Arabic", sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: transparent; }
+body { width: var(--w); height: var(--h); position: relative; overflow: hidden; direction: rtl; color: var(--ivory); }
+
+.quran { font-family: var(--font-quran); font-feature-settings: "liga", "calt"; }
+.ui { font-family: var(--font-ui); }
+.en { direction: ltr; unicode-bidi: isolate; }
+.hl { color: var(--amber); font-weight: 600; }
+.add { color: var(--smoke); }
+
+/* bottom shade + soft top vignette, the only gradients the system uses */
+.shade { position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(11,9,7,.45) 0%, rgba(11,9,7,0) 16%),
+    linear-gradient(to bottom, rgba(11,9,7,0) 48%, rgba(11,9,7,.70) 70%, rgba(11,9,7,.93) 100%); }
+
+.sig { position: absolute; display: block; }
+.nuqta { display: inline-block; width: .5em; height: .62em; background: var(--amber);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); vertical-align: middle; }
+
+/* ayah block */
+.block { position: absolute; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ayah { color: var(--ivory); text-wrap: balance; text-shadow: 0 2px 18px rgba(11,9,7,.55); }
+.tr { color: var(--ivory-muted); font-family: var(--font-ui); font-weight: 500; text-wrap: balance; }
+.label { display: flex; align-items: center; gap: 14px; color: var(--amber); font-family: var(--font-ui); font-weight: 500; letter-spacing: .02em; }
+.label::before, .label::after { content: ""; height: 1px; width: 56px; background: var(--amber); opacity: .55; }

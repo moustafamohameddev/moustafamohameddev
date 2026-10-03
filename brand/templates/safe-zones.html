@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Safe zones</title>
+<link rel="stylesheet" href="brand.css">
+<!--
+  Editing guide (never exported into a video). `format` = vertical | landscape.
+  Vertical zones are the union of Instagram Reels, Facebook Reels, TikTok and YouTube Shorts UI.
+-->
+<style>
+  .vertical  { --w: 1080px; --h: 1920px; }
+  .landscape { --w: 1920px; --h: 1080px; }
+  .z { position: absolute; background: repeating-linear-gradient(45deg, rgba(232,162,74,.30) 0 6px, rgba(232,162,74,.12) 6px 18px);
+    border: 2px solid rgba(232,162,74,.8); display: grid; place-items: center; text-align: center;
+    font-family: var(--font-ui); font-weight: 600; font-size: 26px; color: #fff; text-shadow: 0 1px 4px #000; padding: 8px; }
+  .slot { position: absolute; border: 2px dashed var(--ivory); display: grid; place-items: center;
+    font-family: var(--font-ui); font-weight: 600; font-size: 26px; color: var(--ivory); text-shadow: 0 1px 4px #000; }
+</style>
+<body>
+<div id="v" hidden>
+  <div class="z" style="left:0;top:0;width:1080px;height:250px">واجهة التطبيق فوق · 250px</div>
+  <div class="z" style="left:0;bottom:0;width:1080px;height:480px">الاسم والكابشن والموسيقى · 480px</div>
+  <div class="z" style="right:0;top:900px;width:130px;height:540px">الزراير</div>
+  <div class="slot" style="right:72px;top:262px;width:214px;height:64px">التوقيع</div>
+  <div class="slot" style="left:130px;width:820px;top:1100px;height:340px">الآية + الترجمة<br>(قاعدتها عند y=1440)</div>
+  <div class="slot" style="left:0;width:1080px;top:240px;height:1440px;border-color:var(--amber)"><span style="position:absolute;top:8px;color:var(--amber)">قص الشبكة 3:4 (y 240–1680)</span></div>
+</div>
+<div id="l" hidden>
+  <div class="z" style="left:0;bottom:0;width:1920px;height:96px">شريط التشغيل · 96px</div>
+  <div class="slot" style="right:64px;top:56px;width:200px;height:60px">التوقيع</div>
+  <div class="slot" style="left:260px;width:1400px;top:640px;height:344px">الآية + الترجمة</div>
+</div>
+<script>
+  const land = new URLSearchParams(location.search).get('format') === 'landscape';
+  document.body.className = land ? 'landscape' : 'vertical';
+  document.getElementById(land ? 'l' : 'v').hidden = false;
+</script>
+</body>

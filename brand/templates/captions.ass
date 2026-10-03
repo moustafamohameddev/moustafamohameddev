@@ -1,0 +1,21 @@
+[Script Info]
+; Speech captions for talk videos (never for Quran text: ayat use ayah-overlay.html).
+; Vertical 1080x1920. For landscape set PlayResX/Y to 1920/1080 and MarginV to 120.
+; One Dialogue per highlighted word: the whole chunk in ivory, the spoken word wrapped in {\c&H4AA2E8&}…{\c}.
+; Encoding MUST stay -1: it makes libass order Arabic words correctly across colour tags (178 reverses them).
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Speech,IBM Plex Sans Arabic SemiBold,64,&H00E1EDF4,&H004AA2E8,&H00070B09,&H66070B09,0,0,0,0,100,100,0,0,1,0,3,2,150,150,500,-1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.60,Speech,,0,0,0,,{\c&H4AA2E8&}الصبر{\c} ليس أن تسكت
+Dialogue: 0,0:00:00.60,0:00:01.10,Speech,,0,0,0,,الصبر {\c&H4AA2E8&}ليس{\c} أن تسكت
+Dialogue: 0,0:00:01.10,0:00:01.50,Speech,,0,0,0,,الصبر ليس {\c&H4AA2E8&}أن{\c} تسكت
+Dialogue: 0,0:00:01.50,0:00:02.20,Speech,,0,0,0,,الصبر ليس أن {\c&H4AA2E8&}تسكت{\c}
