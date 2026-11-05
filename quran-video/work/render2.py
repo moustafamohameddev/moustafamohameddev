@@ -19,7 +19,8 @@ PX = (W - PW) // 2
 PY = 650
 RADIUS = 46
 
-cfg = json.load(open(os.path.join(HERE, "timeline2.json"), encoding="utf-8"))
+cfg = json.load(open(os.path.join(HERE, os.environ.get("TIMELINE", "timeline2.json")), encoding="utf-8"))
+STYLE = cfg.get("style", {})
 T0 = cfg["trim"]                 # audio trim point (recitation onset)
 AUDIO_LEN = cfg["audio_len"] - T0
 TAIL = 1.2
@@ -35,7 +36,10 @@ def smooth(e0, e1, x):
 GX, GY = np.meshgrid(np.arange(PW, dtype=np.float32) - PW / 2, np.arange(PH, dtype=np.float32) - PH / 2)
 NX, NY = GX / (PW / 2), GY / (PH / 2)
 VIGNETTE = (1 - 0.28 * np.clip((NX ** 2 * 0.8 + NY ** 2 * 0.9), 0, 1.6) ** 1.3)[..., None].astype(np.float32)
-TEXTDARK = (1 - 0.18 * np.exp(-(NX ** 2 / 0.55 ** 2 + NY ** 2 / 0.30 ** 2)))[..., None].astype(np.float32)
+if cfg.get("style", {}).get("pos") == "bottom":
+    TEXTDARK = (1 - 0.38 * smooth(0.25, 1.0, NY))[..., None].astype(np.float32)
+else:
+    TEXTDARK = (1 - 0.18 * np.exp(-(NX ** 2 / 0.55 ** 2 + NY ** 2 / 0.30 ** 2)))[..., None].astype(np.float32)
 
 def rounded_mask(w, h, r, ss=4):
     im = Image.new("L", (w * ss, h * ss), 0)
@@ -55,12 +59,15 @@ CVIG = (1 - 0.55 * np.clip(((cx - W / 2) / (W * 0.62)) ** 2 + ((cy - H * 0.48) /
 CANVAS_MUL = (CVIG * (1 - 0.62 * shadow[..., None])).astype(np.float32)
 
 # ---------------------------------------------------------------- text
-def make_card(text, size=72):
-    font = ImageFont.truetype(os.path.join(FONTS, "NotoNaskhArabic-VF.ttf"), size)
-    try:
-        font.set_variation_by_axes([620])
-    except Exception:
-        pass
+def make_card(text, size=None):
+    size = size or STYLE.get("size", 72)
+    font = ImageFont.truetype(os.path.join(FONTS, STYLE.get("font", "NotoNaskhArabic-VF.ttf")), size)
+    wght = STYLE.get("wght", 620 if "NotoNaskh" in STYLE.get("font", "NotoNaskhArabic-VF.ttf") else None)
+    if wght:
+        try:
+            font.set_variation_by_axes([wght])
+        except Exception:
+            pass
     pad = 60
     bb = ImageDraw.Draw(Image.new("L", (10, 10))).textbbox((0, 0), text, font=font, direction="rtl", language="ar")
     w, h = bb[2] - bb[0] + 2 * pad, bb[3] - bb[1] + 2 * pad
@@ -68,16 +75,20 @@ def make_card(text, size=72):
     ImageDraw.Draw(a).text((pad - bb[0], pad - bb[1]), text, font=font, fill=255, direction="rtl", language="ar")
     alpha = np.asarray(a).astype(np.float32) / 255.0
     sh = np.clip(cv2.GaussianBlur(alpha, (0, 0), 6) * 0.9 + cv2.GaussianBlur(alpha, (0, 0), 18) * 0.45, 0, 1)
-    glow = cv2.GaussianBlur(alpha, (0, 0), 16) * 0.30
+    glow = cv2.GaussianBlur(alpha, (0, 0), 16) * STYLE.get("glow", 0.30)
     cyy = float((alpha.sum(1) * np.arange(h)).sum() / alpha.sum())
     return dict(alpha=alpha, shadow=sh, glow=glow, w=w, h=h, cy=cyy)
 
 CARD_IMG = [make_card(t) for t, _, _ in CARDS]
 
+FIN, FOUT, RISE = STYLE.get("fade_in", 0.32), STYLE.get("fade_out", 0.22), STYLE.get("rise", 8)
+TEXT_CY = PH - STYLE["bottom_margin"] if STYLE.get("pos") == "bottom" else PH / 2
+TEXT_ALPHA = STYLE.get("opacity", 1.0)
+
 def card_alpha(t, s, e):
-    fi = smooth(s - 0.10, s + 0.22, t)
-    fo = 1 - smooth(e - 0.16, e + 0.06, t)
-    return float(fi * fo), float(smooth(s - 0.10, s + 0.40, t))
+    fi = smooth(s - 0.10, s - 0.10 + FIN, t)
+    fo = 1 - smooth(e - FOUT + 0.06, e + 0.06, t)
+    return float(fi * fo * TEXT_ALPHA), float(smooth(s - 0.10, s + 0.40, t))
 
 def make_label():
     font = ImageFont.truetype(os.path.join(FONTS, "Amiri-Regular.ttf"), 40)
@@ -134,7 +145,7 @@ def render_frame(args):
             continue
         c = CARD_IMG[i]
         x0 = PW // 2 - c["w"] // 2
-        y0 = int(PH / 2 - c["cy"]) + int(round((1 - rise) * 8))
+        y0 = int(TEXT_CY - c["cy"]) + int(round((1 - rise) * RISE))
         ys0, ys1 = max(0, y0), min(PH, y0 + c["h"])
         xs0, xs1 = max(0, x0), min(PW, x0 + c["w"])
         cy0, cx0 = ys0 - y0, xs0 - x0
