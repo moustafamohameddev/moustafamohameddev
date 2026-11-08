@@ -23,7 +23,7 @@ cfg = json.load(open(os.path.join(HERE, os.environ.get("TIMELINE", "timeline2.js
 STYLE = cfg.get("style", {})
 T0 = cfg["trim"]                 # audio trim point (recitation onset)
 AUDIO_LEN = cfg["audio_len"] - T0
-TAIL = 1.2
+TAIL = cfg.get("tail", 1.2)
 DUR = AUDIO_LEN + TAIL
 NFRAMES = int(round(DUR * FPS))
 CARDS = [(c["text"], c["start"] - T0, c["end"] - T0) for c in cfg["cards"]]
@@ -37,7 +37,7 @@ GX, GY = np.meshgrid(np.arange(PW, dtype=np.float32) - PW / 2, np.arange(PH, dty
 NX, NY = GX / (PW / 2), GY / (PH / 2)
 VIGNETTE = (1 - 0.28 * np.clip((NX ** 2 * 0.8 + NY ** 2 * 0.9), 0, 1.6) ** 1.3)[..., None].astype(np.float32)
 if cfg.get("style", {}).get("pos") == "bottom":
-    TEXTDARK = (1 - 0.38 * smooth(0.25, 1.0, NY))[..., None].astype(np.float32)
+    TEXTDARK = (1 - cfg["style"].get("bottom_dark", 0.38) * smooth(0.25, 1.0, NY))[..., None].astype(np.float32)
 else:
     TEXTDARK = (1 - 0.18 * np.exp(-(NX ** 2 / 0.55 ** 2 + NY ** 2 / 0.30 ** 2)))[..., None].astype(np.float32)
 
@@ -115,10 +115,15 @@ GRAIN = [cv2.resize(_gr.normal(0, 1, (H // 2, W // 2)).astype(np.float32), (W, H
 
 def grade(f):
     f = np.clip(f, 0, 1)
-    f = f ** 0.93                                               # lift the deep shadows a touch
+    f = f ** STYLE.get("gamma", 0.93)                           # lift the deep shadows a touch
     lum = (f @ np.array([0.2126, 0.7152, 0.0722], np.float32))[..., None]
-    f = lum + (f - lum) * 0.95
-    f = 0.5 + (f - 0.5) * 1.04
+    f = lum + (f - lum) * STYLE.get("sat", 0.95)
+    if STYLE.get("tame_greens"):
+        # pull loud yellow-greens toward a deeper, slightly cooler green
+        g_ex = np.clip(f[..., 1:2] - np.maximum(f[..., 0:1], f[..., 2:3]), 0, 1)
+        f = f - g_ex * np.array([-0.10, 0.28, -0.04], np.float32) * STYLE["tame_greens"]
+    f = f * STYLE.get("exposure", 1.0)
+    f = 0.5 + (f - 0.5) * STYLE.get("contrast", 1.04)
     f = f + (1 - lum) ** 2 * np.array([-0.006, 0.002, 0.012], np.float32) + lum ** 2 * np.array([0.02, 0.008, -0.015], np.float32)
     return np.clip(f * VIGNETTE * TEXTDARK, 0, 1)
 
@@ -171,7 +176,7 @@ def render_frame(args):
 def frames(src):
     # source → 30fps, upscaled to panel size with lanczos + light sharpen
     p = subprocess.Popen(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", src, "-t", f"{DUR:.3f}",
-                          "-vf", f"fps={FPS},scale={PW}:{PH}:flags=lanczos,unsharp=5:5:0.6:5:5:0.0",
+                          "-vf", f"fps={FPS},scale={PW}:{PH}:flags=lanczos,unsharp=5:5:{STYLE.get('sharpen', 0.6)}:5:5:0.0",
                           "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
     n = 0
     last = None
